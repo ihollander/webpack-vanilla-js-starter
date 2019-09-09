@@ -1,0 +1,149 @@
+{
+  "webpack-scaffold-flatiron-vanilla-js": {
+    "configuration": {
+      "prod": {
+        "webpackOptions": {
+          "mode": "\"production\"",
+          "entry": {
+            "main": "\"./src/index.js\""
+          },
+          "output": {
+            "filename": "\"[name].[contentHash].bundle.js\"",
+            "path": "path.resolve(__dirname, \"dist\")"
+          },
+          "optimization": {
+            "minimizer": [
+              "new OptimizeCssAssetsPlugin()",
+              "new TerserPlugin()",
+              "new HtmlWebpackPlugin({\n        templateParameters:{PROJECT_NAME: \"webpack-vanilla-js-starter\"},\n        template: \"./public/index.html\",\n        minify: {\n          removeAttributeQuotes: true,\n          collapseWhitespace: true,\n          removeComments: true\n        }\n      })"
+            ],
+            "runtimeChunk": "\"single\"",
+            "moduleIds": "\"hashed\"",
+            "splitChunks": {
+              "cacheGroups": {
+                "vendor": {
+                  "test": "/[\\/]node_modules[\\/]/",
+                  "name": "\"vendor\"",
+                  "chunks": "\"all\""
+                }
+              }
+            }
+          },
+          "plugins": [
+            "new MiniCssExtractPlugin({\n      filename: \"[name].[hash].css\"\n    })",
+            "new CleanWebpackPlugin()",
+            "new CopyWebpackPlugin([\n\t\t\t{\n\t\t\t\tfrom: \"public\",\n\t\t\t\tto: \"./\",\n\t\t\t\ttoType: \"dir\",\n\t\t\t\tignore: [\".DS_Store\", \"index.html\"],\n\t\t\t}\n\t\t])"
+          ],
+          "module": {
+            "rules": [
+              {
+                "test": "/\\.scss$/i",
+                "use": [
+                  "MiniCssExtractPlugin.loader",
+                  "\"css-loader\"",
+                  "\"sass-loader\""
+                ]
+              },
+              {
+                "test": "/\\.css$/i",
+                "use": [
+                  "MiniCssExtractPlugin.loader",
+                  "\"css-loader\""
+                ]
+              },
+              {
+                "test": "/\\.html$/i",
+                "use": [
+                  "\"html-loader\""
+                ]
+              },
+              {
+                "test": "/\\.(svg|png|jpg|gif)$/i",
+                "use": {
+                  "loader": "\"file-loader\"",
+                  "options": {
+                    "name": "\"[name].[hash].[ext]\"",
+                    "outputPath": "\"images\""
+                  }
+                }
+              },
+              {
+                "test": "/\\.js$/",
+                "exclude": "/node_modules/",
+                "use": "\"babel-loader\""
+              }
+            ]
+          }
+        },
+        "topScope": [
+          "const path = require('path')",
+          "const { CleanWebpackPlugin } = require('clean-webpack-plugin')",
+          "const MiniCssExtractPlugin = require('mini-css-extract-plugin')",
+          "const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')",
+          "const TerserPlugin = require('terser-webpack-plugin')",
+          "const HtmlWebpackPlugin = require('html-webpack-plugin')",
+          "const CopyWebpackPlugin = require('copy-webpack-plugin')"
+        ],
+        "configName": "prod"
+      },
+      "dev": {
+        "webpackOptions": {
+          "mode": "\"development\"",
+          "devtool": "\"none\"",
+          "entry": {
+            "main": "\"./src/index.js\""
+          },
+          "plugins": [
+            "new HtmlWebpackPlugin({\n      templateParameters: {\n        PROJECT_NAME: \"webpack-vanilla-js-starter\"\n      },\n      template: './public/index.html'\n    })",
+            "new CopyWebpackPlugin([\n\t\t\t{\n\t\t\t\tfrom: \"public\",\n\t\t\t\tto: \"./\",\n\t\t\t\ttoType: \"dir\",\n\t\t\t\tignore: [\".DS_Store\", \"index.html\"],\n\t\t\t}\n\t\t])"
+          ],
+          "module": {
+            "rules": [
+              {
+                "test": "/\\.html$/i",
+                "use": [
+                  "\"html-loader\""
+                ]
+              },
+              {
+                "test": "/\\.(svg|png|jpg|gif)$/i",
+                "use": {
+                  "loader": "\"file-loader\"",
+                  "options": {
+                    "name": "\"[name].[hash].[ext]\"",
+                    "outputPath": "\"images\""
+                  }
+                }
+              },
+              {
+                "test": "/\\.js$/",
+                "exclude": "/node_modules/",
+                "use": "\"babel-loader\""
+              },
+              {
+                "test": "/\\.scss$/i",
+                "use": [
+                  "\"style-loader\"",
+                  "\"css-loader\"",
+                  "\"sass-loader\""
+                ]
+              },
+              {
+                "test": "/\\.css$/i",
+                "use": [
+                  "\"style-loader\"",
+                  "\"css-loader\""
+                ]
+              }
+            ]
+          }
+        },
+        "topScope": [
+          "const HtmlWebpackPlugin = require('html-webpack-plugin')",
+          "const CopyWebpackPlugin = require('copy-webpack-plugin')"
+        ],
+        "configName": "dev"
+      }
+    }
+  }
+}
